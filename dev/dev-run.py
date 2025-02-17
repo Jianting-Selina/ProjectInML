@@ -74,6 +74,22 @@ def get_report(report_id):
         "confidence": report["confidence"],
         "recommendations": recommendations
     }), 200
+# 4. Request Patient Consent
+@app.route('/MeshNetAPI/consent/<string:patient_id>', methods=['POST'])
+def request_consent(patient_id):
+    """Request and store patient consent for AI-based diagnosis."""
+    data = request.get_json()
+    
+    if not data or 'consent' not in data:
+        return jsonify({"error": "Missing consent parameter"}), 400
+    
+    # Store the patient's consent
+    patient_consents[patient_id] = data['consent']
 
+    return jsonify({
+        "message": "Consent recorded successfully",
+        "patient_id": patient_id,
+        "consent_given": data['consent']
+    }), 200
 if __name__ == "__main__":
     app.run(debug=True)
