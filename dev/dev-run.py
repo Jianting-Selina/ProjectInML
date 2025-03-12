@@ -10,11 +10,15 @@ UPLOAD_DIR = "uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 # Simulated database
+
 database = {
     "images": {},
-    "reports": {}
+    "reports": {},
+    "segmentations": {},
+    "progressions": {}
 }
 
+# USE CASE 1
 # 1. Upload MRI Image API
 @app.route("/BrainTumorAPI/upload", methods=["POST"])
 def upload_image():
@@ -91,5 +95,71 @@ def request_consent(patient_id):
         "patient_id": patient_id,
         "consent_given": data['consent']
     }), 200
+
+## USE CASE 2
+# 5. Perform image segmentation to detect and highlight the tumor region.
+@app.route("/BrainTumorAPI/segment", methods=["POST"])
+def segment_tumor():
+    data = request.get_json()
+    image_id = data.get("image_id")
+
+    if not image_id:
+        return jsonify({"error": "Image ID is required"}), 400
+    if image_id not in database["images"]:
+        return jsonify({"error": "Image not found"}), 404
+
+    # Simulated segmentation process
+    segmentation_id = str(uuid.uuid4())
+    tumor_detected = random.choice([True, False])
+    confidence = round(random.uniform(0.85, 0.99), 2) if tumor_detected else None
+    segmentation_mask_url = f"http://srv/BrainTumorAPI/masks/{segmentation_id}.png" if tumor_detected else None
+    tumor_region = {"x": random.randint(100, 200), "y": random.randint(100, 200), "width": 80, "height": 90} if tumor_detected else None
+
+    database["segmentations"][segmentation_id] = {
+        "image_id": image_id,
+        "patient_id": database["images"][image_id]["patient_id"],
+        "tumor_detected": tumor_detected,
+        "confidence": confidence,
+        "segmentation_mask_url": segmentation_mask_url,
+        "tumor_region_coordinates": tumor_region
+    }
+    
+    return jsonify({
+        "segmentation_id": segmentation_id,
+        "image_id": image_id,
+        "patient_id": database["images"][image_id]["patient_id"],
+        "tumor_detected": tumor_detected,
+        "confidence": confidence,
+        "segmentation_mask_url": segmentation_mask_url,
+        "tumor_region_coordinates": tumor_region
+    }), 200 if tumor_detected else 204
+
+#6 Analyze tumor progression by comparing past and recent MRI scans
+@app.route("/BrainTumorAPI/progression", methods=["POST"])
+def analyze_progression():
+    data = request.get_json()
+    patient_id = data.get("patient_id")
+    latest_image_id = data.get("latest_image_id")
+    previous_image_id = data.get("previous_image_id")
+
+    if not patient_id or not latest_image_id or not previous_image_id:
+        return jsonify({"error": "Both image IDs are required"}), 400
+    if latest_image_id not in database["images"] or previous_image_id not in database["images"]:
+        return jsonify({"error": "MRI scan not found for comparison"}), 404
+
+    # Simulated tumor progression analysis
+    progression_status = random.choice(["increased", "stable", "decreased"])
+    size_difference = f"{random.randint(5, 20)}% {progression_status}" if progression_status != "stable" else "No significant change"
+    confidence = round(random.uniform(0.85, 0.99), 2)
+
+    return jsonify({
+        "patient_id": patient_id,
+        "latest_image_id": latest_image_id,
+        "previous_image_id": previous_image_id,
+        "progression_status": progression_status,
+        "size_difference": size_difference,
+        "confidence": confidence
+    }), 200
+
 if __name__ == "__main__":
     app.run(debug=True)
