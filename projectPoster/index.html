@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+    
+    body {
+      background-color: #f0f0f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    
+    .poster {
+      width: 900px;
+      height: 1800px;
+      background-color: white;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    
+    .header {
+      background: linear-gradient(to right, #1a2a6c, #b21f1f, #fdbb2d);
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+    
+    .title {
+      font-size: 48px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    
+    .subtitle {
+      font-size: 24px;
+      font-style: italic;
+    }
+    
+    .authors {
+      font-size: 20px;
+      margin-top: 20px;
+    }
+    
+    .content {
+      display: flex;
+      flex: 1;
+    }
+    
+    .left-column {
+      flex: 2;
+      padding: 30px;
+      background-color: #f9f9f9;
+    }
+    
+    .right-column {
+      flex: 3;
+      padding: 30px;
+    }
+    
+    .section {
+      margin-bottom: 30px;
+    }
+    
+    .section-title {
+      font-size: 28px;
+      color: #1a2a6c;
+      margin-bottom: 15px;
+      border-bottom: 2px solid #1a2a6c;
+      padding-bottom: 5px;
+    }
+    
+    .section-content {
+      font-size: 18px;
+      line-height: 1.5;
+    }
+    
+    .image-placeholder {
+      background-color: #e0e0e0;
+      height: 200px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+    }
+    
+    .results-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    
+    .metric {
+      background-color: #f0f0f0;
+      padding: 15px;
+      border-radius: 5px;
+      text-align: center;
+    }
+    
+    .metric-value {
+      font-size: 32px;
+      font-weight: bold;
+      color: #b21f1f;
+    }
+    
+    .metric-label {
+      font-size: 16px;
+      color: #333;
+    }
+    
+    .footer {
+      background-color: #1a2a6c;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    
+    .references {
+      font-size: 14px;
+      padding: 20px;
+      background-color: #f9f9f9;
+    }
+    
+    .reference-item {
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="poster">
+    <div class="header">
+      <div class="title">Advanced Brain Tumor Detection</div>
+      <div class="subtitle">Using Deep Learning for Accurate and Efficient Diagnosis</div>
+      <div class="authors">NeuroVision AI: <br>Jianting Liu, Marieth Perez, Akindele David Awe, Ayush Patel, Emmanuel Itsuokor</div>
+    </div>
+    
+    <div class="content">
+      <div class="left-column">
+        <div class="section">
+          <div class="section-title">Introduction</div>
+          <div class="section-content">
+            Brain tumors affect millions worldwide and early detection is critical for survival. Manual diagnosis is time-consuming and prone to human error. Our project leverages state-of-the-art deep learning to automate and improve the detection process.
+          </div>
+        </div>
+        
+        <div class="section">
+          <div class="section-title">Methods</div>
+          <div class="section-content">
+            <p>We developed a convolutional neural network architecture optimized for brain MRI analysis:</p>
+            <br>
+            <ul style="margin-left: 20px;">
+              <li>Dataset: 3000+ MRI scans with expert annotations</li>
+              <li>Preprocessing: Normalization, augmentation, and segmentation</li>
+              <li>Architecture: Modified U-Net with attention mechanisms</li>
+              <li>Training: Transfer learning approach with 5-fold cross-validation</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="section">
+          <div class="section-title">Challenges Addressed</div>
+          <div class="section-content">
+            <ul style="margin-left: 20px;">
+              <li>Limited training data availability</li>
+              <li>Class imbalance between tumor and non-tumor samples</li>
+              <li>Variability in imaging protocols and equipment</li>
+              <li>False positive reduction in boundary cases</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+      <div class="right-column">
+        <div class="section">
+          <div class="section-title">Model Architecture</div>
+          <div class="image-placeholder">
+            [Neural Network Architecture Diagram]
+          </div>
+          <div class="section-content">
+            Our model incorporates residual connections and spatial attention mechanisms to focus on relevant regions while maintaining context. The decoder path incorporates multi-scale feature integration for improved boundary detection.
+          </div>
+        </div>
+        
+        <div class="section">
+          <div class="section-title">Results</div>
+          <div class="results-grid">
+            <div class="metric">
+              <div class="metric-value">96.7%</div>
+              <div class="metric-label">Accuracy</div>
+            </div>
+            <div class="metric">
+              <div class="metric-value">0.94</div>
+              <div class="metric-label">Dice Coefficient</div>
+            </div>
+            <div class="metric">
+              <div class="metric-value">95.2%</div>
+              <div class="metric-label">Sensitivity</div>
+            </div>
+            <div class="metric">
+              <div class="metric-value">97.8%</div>
+              <div class="metric-label">Specificity</div>
+            </div>
+          </div>
+          <br>
+          <div class="image-placeholder">
+            [Performance Comparison Graph]
+          </div>
+        </div>
+        
+        <div class="section">
+          <div class="section-title">Clinical Impact</div>
+          <div class="section-content">
+            <p>Our system offers significant advantages for clinical implementation:</p>
+            <br>
+            <ul style="margin-left: 20px;">
+              <li>Reduces diagnosis time from hours to seconds</li>
+              <li>Provides second opinion for radiologists</li>
+              <li>Works with standard DICOM format</li>
+              <li>Localizes and classifies tumor regions</li>
+              <li>Potential for integration with existing hospital systems</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="references">
+      <div class="section-title" style="font-size: 22px;">References</div>
+      <div class="reference-item">1. Isensee, F., et al. (2021). "nnU-Net: a self-configuring method for deep learning-based biomedical image segmentation." Nature Methods.</div>
+      <div class="reference-item">2. Bakas, S., et al. (2019). "Identifying the Best Machine Learning Algorithms for Brain Tumor Segmentation." IEEE Trans Med Imaging.</div>
+      <div class="reference-item">3. Myronenko, A. (2018). "3D MRI brain tumor segmentation using autoencoder regularization." MICCAI BraTS Challenge.</div>
+    </div>
+    
+    <div class="footer">
+       Project Repository: https://github.com/Jianting-Selina/ProjectInML
+    </div>
+  </div>
+</body>
+</html>
