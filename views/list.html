@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient List - Brain Tumor Detection System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .nav {
+            background: #333;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        .nav a {
+            color: white;
+            margin-right: 15px;
+            text-decoration: none;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .action-btn {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+        .search-box {
+            margin-bottom: 20px;
+        }
+        .search-input {
+            padding: 8px;
+            width: 70%;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .search-btn {
+            padding: 8px 15px;
+            background: #333;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="index.html">Home</a>
+            <a href="patient-register.html">Register Patient</a>
+            <a href="patient-list.html">Patient List</a>
+            <a href="detection.html">AI Detection</a>
+        </div>
+        
+        <h1>Patient List</h1>
+        
+        <div class="search-box">
+            <input type="text" id="searchInput" class="search-input" placeholder="Search by patient ID or name">
+            <button class="search-btn" onclick="searchPatients()">Search</button>
+        </div>
+        
+        <table id="patientTable">
+            <thead>
+                <tr>
+                    <th>Patient ID</th>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Gender</th>
+                    <th>Registration Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="patientsList">
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Load patients when page loads
+        window.onload = function() {
+            loadPatients();
+        };
+        
+        // Load patient list
+        function loadPatients() {
+            const patients = JSON.parse(localStorage.getItem('patients')) || [];
+            const tableBody = document.getElementById('patientsList');
+            
+            // Clear table
+            tableBody.innerHTML = '';
+            
+            if (patients.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No patient data available</td></tr>';
+                return;
+            }
+            
+            // Fill table
+            patients.forEach(patient => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${patient.id}</td>
+                    <td>${patient.name}</td>
+                    <td>${patient.age}</td>
+                    <td>${patient.gender === 'male' ? 'Male' : 'Female'}</td>
+                    <td>${patient.registrationDate}</td>
+                    <td>
+                        <button class="action-btn" onclick="viewPatient('${patient.id}')">View</button>
+                        <button class="action-btn" onclick="startDetection('${patient.id}')">Detect</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // Search patients
+        function searchPatients() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const patients = JSON.parse(localStorage.getItem('patients')) || [];
+            const tableBody = document.getElementById('patientsList');
+            
+            // Clear table
+            tableBody.innerHTML = '';
+            
+            // Filter and show results
+            const filteredPatients = patients.filter(patient => 
+                patient.id.toLowerCase().includes(searchTerm) || 
+                patient.name.toLowerCase().includes(searchTerm)
+            );
+            
+            if (filteredPatients.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No matching results found</td></tr>';
+                return;
+            }
+            
+            // Fill table
+            filteredPatients.forEach(patient => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${patient.id}</td>
+                    <td>${patient.name}</td>
+                    <td>${patient.age}</td>
+                    <td>${patient.gender === 'male' ? 'Male' : 'Female'}</td>
+                    <td>${patient.registrationDate}</td>
+                    <td>
+                        <button class="action-btn" onclick="viewPatient('${patient.id}')">View</button>
+                        <button class="action-btn" onclick="startDetection('${patient.id}')">Detect</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // View patient details
+        function viewPatient(patientId) {
+            window.location.href = `patient-detail.html?id=${patientId}`;
+        }
+        
+        // Go to AI detection page
+        function startDetection(patientId) {
+            window.location.href = `detection.html?id=${patientId}`;
+        }
+    </script>
+</body>
+</html>
