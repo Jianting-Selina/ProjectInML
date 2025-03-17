@@ -22,7 +22,13 @@ class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'dev-key-for-brain-tumor-detection'
     # Cambiar PostgreSQL a SQLite
     #SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///brain_tumor_db.sqlite'
-    SQLALCHEMY_DATABASE_URI = 'sqlite:////Users/marieth/Documents/Conestoga AI/Project_ML/ProjectInML/brain_tumor_db.sqlite'
+    #SQLALCHEMY_DATABASE_URI = 'sqlite:////Users/marieth/Documents/Conestoga AI/Project_ML/ProjectInML/brain_tumor_db.sqlite'
+    #test for base dir
+    basedir = os.environ.get('DATABASE_BASE_DIR')  # Get base directory from environment variable
+    if not basedir:
+        basedir = os.path.abspath(os.path.dirname(__file__)) # Default to config.py's directory if not set
+    
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'brain_tumor_db.sqlite')
 
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
