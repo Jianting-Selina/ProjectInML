@@ -10,6 +10,7 @@ instance/
 
 # Ignore virtual environment files (if any)
 myenv-braindetection/
+myprojectbraindetection/
 venv/
 env/
 .env
