@@ -40,7 +40,7 @@ COPY . .
 EXPOSE 5000
 
 # Set environment variables
-ENV FLASK_APP=app.py
+ENV FLASK_APP=run.py
 ENV FLASK_RUN_HOST=0.0.0.0
 
 # Start the Flask application
@@ -49,5 +49,5 @@ CMD ["flask", "run", "--host=0.0.0.0", "--port=5000"]
 # This sets the default command for the container to run the app with Streamlit.
 ENTRYPOINT ["streamlit", "run"]
 
-# This command tells Streamlit to run your app.py script when the container starts.
-CMD ["app.py"]
+# This command tells Streamlit to run your run.py script when the container starts.
+CMD ["run.py"]
