@@ -1,0 +1,25 @@
+# Ignore macOS system files
+.DS_Store
+
+# Ignore SQLite database files
+*.sqlite
+*.sqlite-journal
+
+# Ignore the instance folder
+instance/
+
+# Ignore virtual environment files (if any)
+myenv-braindetection/
+venv/
+env/
+.env
+
+# Ignore generated Python files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore log files (if any)
+*.log
+
