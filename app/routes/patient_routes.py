@@ -4,17 +4,12 @@ from app.services.patient_service import (
     create_patient, update_patient, delete_patient
 )
 
-patient_bp = Blueprint('patient_bp', __name__, template_folder='views')
+patient_bp = Blueprint('patient_bp', __name__, template_folder='../../views')
 
 @patient_bp.route('/', methods=['GET'])
-@patient_bp.route('', methods=['GET'])
+@patient_bp.route('/list', methods=['GET'])
 def get_patients():
-    search_term = request.args.get('search', '')
-    if search_term:
-        patients = search_patients(search_term)
-    else:
-        patients = get_all_patients()
-    return jsonify(patients)
+    return render_template('list.html')
 
 @patient_bp.route('/<patient_id>', methods=['GET'])
 def get_patient(patient_id):
@@ -25,8 +20,11 @@ def get_patient(patient_id):
 
 @patient_bp.route('/form', methods=['GET'])
 def patient_form():
-    
     return render_template('form.html')
+
+@patient_bp.route('/detection', methods=['GET'])
+def patient_detection():
+    return render_template('detection.html')
 
 @patient_bp.route('', methods=['POST'])
 def add_patient():
