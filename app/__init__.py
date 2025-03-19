@@ -10,7 +10,7 @@ db = SQLAlchemy()
 def create_app(config_class=Config):
     app = Flask(__name__, 
                 static_folder='../static',
-                template_folder='../templates')
+                template_folder='../views')
     app.config.from_object(config_class)
     CORS(app)
     
