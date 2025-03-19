@@ -1,11 +1,10 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify,render_template
 from app.services.patient_service import (
     get_all_patients, get_patient_by_id, search_patients,
     create_patient, update_patient, delete_patient
 )
 
-patient_bp = Blueprint('patient_bp', __name__)
-
+patient_bp = Blueprint('patient_bp', __name__, template_folder='views')
 
 @patient_bp.route('/', methods=['GET'])
 @patient_bp.route('', methods=['GET'])
@@ -23,6 +22,11 @@ def get_patient(patient_id):
     if not patient:
         return jsonify({"error": "Patient not found"}), 404
     return jsonify(patient)
+
+@patient_bp.route('/form', methods=['GET'])
+def patient_form():
+    
+    return render_template('form.html')
 
 @patient_bp.route('', methods=['POST'])
 def add_patient():
