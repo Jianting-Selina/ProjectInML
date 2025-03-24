@@ -6,7 +6,7 @@ app = create_app()
 #app.register_blueprint(patient_bp, url_prefix='/patients')
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5001, debug=True)
     print("Registered routes:")
     for rule in app.url_map.iter_rules():
         print(f"{rule} - {rule.endpoint}")

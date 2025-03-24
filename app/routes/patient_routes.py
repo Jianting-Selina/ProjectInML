@@ -61,34 +61,26 @@ from app.services.patient_service import (
 
 patient_bp = Blueprint('patient_bp', __name__, template_folder='../../views')
 
-@patient_bp.route('/', methods=['GET'])
-@patient_bp.route('/list', methods=['GET'])
-def get_patients_list():
-    return render_template('list.html')
-@patient_bp.route('/getpatients', methods=['GET'])
-def get_patients():
-    #patient = get_patient_by_id(patient_id)
-    logger.info(f"Patient list information")
-    # if not patient:
-    #     return jsonify({"error": "Patient not found"}), 404
-    # return jsonify(patient)
-    return {"name":"abc","age":2}
 
-@patient_bp.route('/<patient_id>', methods=['GET'])
-def get_patient(patient_id):
-    patient = get_patient_by_id(patient_id)
-    if not patient:
-        return jsonify({"error": "Patient not found"}), 404
-    return jsonify(patient)
-
+# front-end route start
 @patient_bp.route('/form', methods=['GET'])
 def patient_form():
     return render_template('form.html')
+
+@patient_bp.route('/list', methods=['GET'])
+def get_patients_list():
+    return render_template('list.html')
 
 @patient_bp.route('/detection', methods=['GET'])
 def patient_detection():
     return render_template('detection.html')
 
+# front-end route end
+
+
+
+@patient_bp.route('/', methods=['GET'])
+# create patient
 @patient_bp.route('', methods=['POST'])
 def add_patient():
     if not request.is_json:
@@ -105,6 +97,29 @@ def add_patient():
     logger.info(f"Patient has been created")
       
     return jsonify(patient), 201
+
+#get patients api
+@patient_bp.route('/getpatients', methods=['GET'])
+def get_patients():
+    #patient = get_patient_by_id(patient_id)
+    logger.info(f"Patient list information")
+    # if not patient:
+    #     return jsonify({"error": "Patient not found"}), 404
+    # return jsonify(patient)
+    return {"name":"abc","age":2}
+
+
+
+@patient_bp.route('/<patient_id>', methods=['GET'])
+def get_patient(patient_id):
+    patient = get_patient_by_id(patient_id)
+    if not patient:
+        return jsonify({"error": "Patient not found"}), 404
+    return jsonify(patient)
+
+
+
+
 
 @patient_bp.route('/<patient_id>', methods=['PUT'])
 def update_patient_route(patient_id):

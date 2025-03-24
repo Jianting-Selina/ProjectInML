@@ -21,7 +21,7 @@ RUN pip install --no-cache-dir --upgrade pip && \
 COPY . /app/
 
 # port
-EXPOSE 5000
+EXPOSE 5001
 
 # enviroment setting
 ENV FLASK_APP=run.py
