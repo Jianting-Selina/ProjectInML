@@ -65,7 +65,7 @@ patient_bp = Blueprint('patient_bp', __name__, template_folder='../../views')
 # front-end route start
 @patient_bp.route('/form', methods=['GET'])
 def patient_form():
-    return render_template('form.html')
+    return render_template('form.html') 
 
 @patient_bp.route('/list', methods=['GET'])
 def get_patients_list():
@@ -79,8 +79,26 @@ def patient_detection():
 
 
 
+
+
 @patient_bp.route('/', methods=['GET'])
-# create patient
+@patient_bp.route('', methods=['GET'])
+def get_patients():
+    search_term = request.args.get('search', '')
+    if search_term:
+        patients = search_patients(search_term)
+    else:
+        patients = get_all_patients()
+    return jsonify(patients)
+
+
+@patient_bp.route('/<patient_id>', methods=['GET'])
+def get_patient(patient_id):
+    patient = get_patient_by_id(patient_id)
+    if not patient:
+        return jsonify({"error": "Patient not found"}), 404
+    return jsonify(patient)
+
 @patient_bp.route('', methods=['POST'])
 def add_patient():
     if not request.is_json:
@@ -94,31 +112,7 @@ def add_patient():
             return jsonify({"error": f"Missing required field: {field}"}), 400
     
     patient = create_patient(data)
-    logger.info(f"Patient has been created")
-      
     return jsonify(patient), 201
-
-#get patients api
-@patient_bp.route('/getpatients', methods=['GET'])
-def get_patients():
-    #patient = get_patient_by_id(patient_id)
-    logger.info(f"Patient list information")
-    # if not patient:
-    #     return jsonify({"error": "Patient not found"}), 404
-    # return jsonify(patient)
-    return {"name":"abc","age":2}
-
-
-
-@patient_bp.route('/<patient_id>', methods=['GET'])
-def get_patient(patient_id):
-    patient = get_patient_by_id(patient_id)
-    if not patient:
-        return jsonify({"error": "Patient not found"}), 404
-    return jsonify(patient)
-
-
-
 
 
 @patient_bp.route('/<patient_id>', methods=['PUT'])
