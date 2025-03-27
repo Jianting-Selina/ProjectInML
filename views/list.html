@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,43 +12,53 @@
             padding: 20px;
             background-color: #f4f4f4;
         }
+
         .container {
             max-width: 800px;
             margin: 0 auto;
             background: white;
             padding: 20px;
             border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+
         h1 {
             color: #333;
             text-align: center;
         }
+
         .nav {
             background: #333;
             padding: 10px;
             margin-bottom: 20px;
         }
+
         .nav a {
             color: white;
             margin-right: 15px;
             text-decoration: none;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
         }
-        th, td {
+
+        th,
+        td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
         }
+
         th {
             background-color: #f2f2f2;
         }
+
         tr:nth-child(even) {
             background-color: #f9f9f9;
         }
+
         .action-btn {
             background: #2196F3;
             color: white;
@@ -57,15 +68,18 @@
             cursor: pointer;
             margin-right: 5px;
         }
+
         .search-box {
             margin-bottom: 20px;
         }
+
         .search-input {
             padding: 8px;
             width: 70%;
             border: 1px solid #ddd;
             border-radius: 4px;
         }
+
         .search-btn {
             padding: 8px 15px;
             background: #333;
@@ -76,6 +90,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="nav">
@@ -84,14 +99,14 @@
             <a href="list">Patient List</a>
             <a href="detection">AI Detection</a>
         </div>
-        
+
         <h1>Patient List</h1>
-        
+
         <div class="search-box">
             <input type="text" id="searchInput" class="search-input" placeholder="Search by name">
             <button class="search-btn" onclick="searchPatients()">Search</button>
         </div>
-        
+
         <table id="patientTable">
             <thead>
                 <tr>
@@ -145,17 +160,17 @@
         ];
 
         // Load patients when page loads
-        window.onload = function() {
+        window.onload = function () {
             loadPatients();
         };
-        
+
         // Load patient list
         function loadPatients() {
             const tableBody = document.getElementById('patientsList');
-            
+
             // Clear table first
             tableBody.innerHTML = '';
-            
+
             // Fetch patients from API (with fallback to demo data)
             fetch('http://0.0.0.0:5001/api/patients/getpatients', {
                 method: 'GET',
@@ -163,26 +178,56 @@
                     'Content-Type': 'application/json',
                 }
             })
-            .then(response => {
-                if (!response.ok) {
-                    console.warn('Network response was not ok, using demo data');
-                    return { patients: DEMO_PATIENTS };
-                }
-                return response.json();
-            })
-            .then(data => {
-                // Use API data or demo data
-                const patients = data.patients || DEMO_PATIENTS;
-                
-                if (patients.length === 0) {
-                    tableBody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No patient data available</td></tr>';
-                    return;
-                }
-                
-                // Fill table with patients
-                patients.forEach(patient => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
+                .then(response => {
+                    if (!response.ok) {
+                        console.warn('Network response was not ok, using demo data');
+                        return { patients: DEMO_PATIENTS };
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Use API data or demo data
+                    const patients = data.patients || DEMO_PATIENTS;
+
+                    if (patients.length === 0) {
+                        tableBody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No patient data available</td></tr>';
+                        return;
+                    }
+
+                    // Fill table with patients
+                    patients.forEach(patient => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+            <td>${patient.name}</td>
+            <td>${patient.age}</td>
+            <td>${patient.gender === 'male' ? 'Male' : 'Female'}</td>
+            <td>${patient.phone}</td>
+            <td>${patient.registrationDate}</td>
+            <td>
+                <button class="action-btn" onclick="viewPatient('${patient.id}')">View</button>
+                <button class="action-btn" onclick="startDetection(
+                    '${patient.id}', 
+                    '${patient.name}', 
+                    '${patient.age}', 
+                    '${patient.gender}', 
+                    '${patient.phone}', 
+                    '${patient.symptoms}'
+                )">Detect</button>
+            </td>
+        `;
+                        tableBody.appendChild(row);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching patients:', error);
+                    // Fallback to demo data if API fails
+                    const tableBody = document.getElementById('patientsList');
+                    tableBody.innerHTML = '<tr><td colspan="6" style="text-align: center;">Error loading patients. Using demo data.</td></tr>';
+
+                    // Load demo patients
+                    DEMO_PATIENTS.forEach(patient => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
                         <td>${patient.name}</td>
                         <td>${patient.age}</td>
                         <td>${patient.gender === 'male' ? 'Male' : 'Female'}</td>
@@ -193,52 +238,29 @@
                             <button class="action-btn" onclick="startDetection('${patient.id}')">Detect</button>
                         </td>
                     `;
-                    tableBody.appendChild(row);
+                        tableBody.appendChild(row);
+                    });
                 });
-            })
-            .catch(error => {
-                console.error('Error fetching patients:', error);
-                // Fallback to demo data if API fails
-                const tableBody = document.getElementById('patientsList');
-                tableBody.innerHTML = '<tr><td colspan="6" style="text-align: center;">Error loading patients. Using demo data.</td></tr>';
-                
-                // Load demo patients
-                DEMO_PATIENTS.forEach(patient => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${patient.name}</td>
-                        <td>${patient.age}</td>
-                        <td>${patient.gender === 'male' ? 'Male' : 'Female'}</td>
-                        <td>${patient.phone}</td>
-                        <td>${patient.registrationDate}</td>
-                        <td>
-                            <button class="action-btn" onclick="viewPatient('${patient.id}')">View</button>
-                            <button class="action-btn" onclick="startDetection('${patient.id}')">Detect</button>
-                        </td>
-                    `;
-                    tableBody.appendChild(row);
-                });
-            });
         }
-        
+
         // Search patients
         function searchPatients() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             const tableBody = document.getElementById('patientsList');
-            
+
             // Use demo data for searching (in real app, this would come from API)
-            const filteredPatients = DEMO_PATIENTS.filter(patient => 
+            const filteredPatients = DEMO_PATIENTS.filter(patient =>
                 patient.name.toLowerCase().includes(searchTerm)
             );
-            
+
             // Clear table
             tableBody.innerHTML = '';
-            
+
             if (filteredPatients.length === 0) {
                 tableBody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No matching results found</td></tr>';
                 return;
             }
-            
+
             // Fill table with filtered patients
             filteredPatients.forEach(patient => {
                 const row = document.createElement('tr');
@@ -256,18 +278,34 @@
                 tableBody.appendChild(row);
             });
         }
-        
+
         // View patient details
         function viewPatient(patientId) {
             // In a real application, this would navigate to a detailed patient view
             alert(`Viewing details for Patient ID: ${patientId}`);
         }
-        
+
         // Go to AI detection page
-        function startDetection(patientId) {
-            // In a real application, this would navigate to the AI detection page
-            alert(`Starting AI detection for Patient ID: ${patientId}`);
+        // Go to AI detection page
+        function startDetection(patientId, name, age, gender, phone, symptoms) {
+            try {
+                // Construct the URL with multiple patient details
+                const detectionUrl = `/api/patient/detection?` +
+                    `patientId=${encodeURIComponent(patientId)}` +
+                    `&name=${encodeURIComponent(name)}` +
+                    `&age=${encodeURIComponent(age)}` +
+                    `&gender=${encodeURIComponent(gender)}` +
+                    `&phone=${encodeURIComponent(phone)}` +
+                    `&symptoms=${encodeURIComponent(symptoms)}`;
+
+                // Navigate to the detection page
+                window.location.href = detectionUrl;
+            } catch (error) {
+                console.error('Error starting detection:', error);
+                alert('Failed to start detection. Please try again.');
+            }
         }
     </script>
 </body>
+
 </html>
