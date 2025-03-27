@@ -290,7 +290,7 @@
         function startDetection(patientId, name, age, gender, phone, symptoms) {
             try {
                 // Construct the URL with multiple patient details
-                const detectionUrl = `/api/patient/detection?` +
+                const detectionUrl = `/api/patients/detection?` +
                     `patientId=${encodeURIComponent(patientId)}` +
                     `&name=${encodeURIComponent(name)}` +
                     `&age=${encodeURIComponent(age)}` +
