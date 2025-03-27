@@ -167,79 +167,47 @@
         // Load patient list
         function loadPatients() {
             const tableBody = document.getElementById('patientsList');
-
-            // Clear table first
             tableBody.innerHTML = '';
 
-            // Fetch patients from API (with fallback to demo data)
-            fetch('http://0.0.0.0:5001/api/patients/getpatients', {
+            fetch('http://0.0.0.0:5001/api/patients/', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                 }
             })
                 .then(response => {
-                    if (!response.ok) {
-                        console.warn('Network response was not ok, using demo data');
-                        return { patients: DEMO_PATIENTS };
-                    }
-                    return response.json();
+                    console.log('Response status:', response.status); // 打印状态码
+                    console.log('Response ok:', response.ok); // 打印 ok 状态
+                    return response.json(); // 直接解析 JSON
                 })
                 .then(data => {
-                    // Use API data or demo data
-                    const patients = data.patients || DEMO_PATIENTS;
+                    console.log('Received data:', data); // 打印接收的数据
+                    const patients = data; // 可能不需要 data.patients
 
                     if (patients.length === 0) {
                         tableBody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No patient data available</td></tr>';
                         return;
                     }
 
-                    // Fill table with patients
                     patients.forEach(patient => {
                         const row = document.createElement('tr');
                         row.innerHTML = `
-            <td>${patient.name}</td>
-            <td>${patient.age}</td>
-            <td>${patient.gender === 'male' ? 'Male' : 'Female'}</td>
-            <td>${patient.phone}</td>
-            <td>${patient.registrationDate}</td>
-            <td>
-                <button class="action-btn" onclick="viewPatient('${patient.id}')">View</button>
-                <button class="action-btn" onclick="startDetection(
-                    '${patient.id}', 
-                    '${patient.name}', 
-                    '${patient.age}', 
-                    '${patient.gender}', 
-                    '${patient.phone}', 
-                    '${patient.symptoms}'
-                )">Detect</button>
-            </td>
-        `;
+                <td>${patient.name}</td>
+                <td>${patient.age}</td>
+                <td>${patient.gender === 'male' ? 'Male' : 'Female'}</td>
+                <td>${patient.phone}</td>
+                <td>${patient.registration_date}</td>
+                <td>
+                    <button class="action-btn" onclick="viewPatient('${patient.patient_id}')">View</button>
+                    <button class="action-btn" onclick="startDetection('${patient.patient_id}','${patient.name}','${patient.age}','${patient.gender}','${patient.phone}','${patient.symptoms}')">Detect</button>
+                </td>
+            `;
                         tableBody.appendChild(row);
                     });
                 })
                 .catch(error => {
                     console.error('Error fetching patients:', error);
-                    // Fallback to demo data if API fails
-                    const tableBody = document.getElementById('patientsList');
-                    tableBody.innerHTML = '<tr><td colspan="6" style="text-align: center;">Error loading patients. Using demo data.</td></tr>';
-
-                    // Load demo patients
-                    DEMO_PATIENTS.forEach(patient => {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                        <td>${patient.name}</td>
-                        <td>${patient.age}</td>
-                        <td>${patient.gender === 'male' ? 'Male' : 'Female'}</td>
-                        <td>${patient.phone}</td>
-                        <td>${patient.registrationDate}</td>
-                        <td>
-                            <button class="action-btn" onclick="viewPatient('${patient.id}')">View</button>
-                            <button class="action-btn" onclick="startDetection('${patient.id}')">Detect</button>
-                        </td>
-                    `;
-                        tableBody.appendChild(row);
-                    });
+                    alert('network error');
                 });
         }
 

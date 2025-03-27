@@ -227,43 +227,43 @@
             fetchPatientData(patientId);
         };
 
-        // Fetch patient data from API
-        function fetchPatientData(id) {
-            // First, try to fetch from API
-            fetch(`http://0.0.0.0:5001/api/patients/${id}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            })
-            .then(response => {
-                if (!response.ok) {
-                    console.warn('Failed to fetch patient data from API, using demo data');
-                    return { patient: DEMO_PATIENTS[0] };
-                }
-                return response.json();
-            })
-            .then(data => {
-                const patient = data.patient || DEMO_PATIENTS[0];
-                
-                // Update patient information
-                document.getElementById('patientName').textContent = patient.name;
-                document.getElementById('patientAge').textContent = patient.age;
-                document.getElementById('patientGender').textContent = 
-                    patient.gender === 'male' ? 'Male' : 'Female';
-                document.getElementById('patientSymptoms').textContent = 
-                    patient.symptoms || 'No symptoms reported';
-            })
-            .catch(error => {
-                console.error('Error fetching patient data:', error);
-                // Fallback to demo data
-                const patient = DEMO_PATIENTS[0];
-                document.getElementById('patientName').textContent = patient.name;
-                document.getElementById('patientAge').textContent = patient.age;
-                document.getElementById('patientGender').textContent = 
-                    patient.gender === 'male' ? 'Male' : 'Female';
-            });
+        // Fetch patient data from URL parameters
+function fetchPatientData() {
+    // Get patient details from URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const patientName = urlParams.get('name') || 'Unknown';
+    const patientAge = urlParams.get('age') || '-';
+    const patientGender = urlParams.get('gender') || '-';
+    const patientSymptoms = urlParams.get('symptoms') || 'No symptoms reported';
+
+    // Update patient information on the page
+    document.getElementById('patientName').textContent = patientName;
+    document.getElementById('patientAge').textContent = patientAge;
+    document.getElementById('patientGender').textContent = 
+        patientGender === 'male' ? 'Male' : 'Female';
+    document.getElementById('patientSymptoms').textContent = patientSymptoms;
+}
+
+// Modify window.onload to call the new fetchPatientData
+window.onload = function() {
+    // Set up image upload preview
+    document.getElementById('imageUpload').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                document.getElementById('imagePreview').src = event.target.result;
+            };
+            reader.readAsDataURL(file);
         }
+    });
+    
+    // Set up detection button
+    document.getElementById('detectBtn').addEventListener('click', startDetection);
+    
+    // Fetch patient data from URL
+    fetchPatientData();
+};
 
         // Start AI detection
         function startDetection() {
