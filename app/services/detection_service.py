@@ -23,12 +23,11 @@ def get_detection_by_id(detection_id):
         return detection.to_dict()
     return None
 
-
 # def create_detection(patient_id, image_file, app):
 #     """Create a new detection for a patient"""
 #     patient = Patient.query.filter_by(patient_id=patient_id).first()
 #     if not patient:
-#         return {"error": "Patient not found"}, 404
+#          return {"error": "Patient not found"}, 404
     
 #     # Save the uploaded image
 #     filename = secure_filename(image_file.filename)
@@ -47,14 +46,14 @@ def get_detection_by_id(detection_id):
     
 #     # Create a new detection record
 #     new_detection = Detection(
-#         patient_id=patient.id,
-#         image_path=db_image_path,
-#         has_tumor=result['has_tumor'],
-#         confidence=result['confidence'],
-#         tumor_type=result.get('tumor_type'),
-#         tumor_location=result.get('tumor_location'),
-#         tumor_size=result.get('tumor_size'),
-#         result_image_path=result.get('result_image_path')
+#          patient_id=patient.id,
+#          image_path=db_image_path,
+#          has_tumor=result['has_tumor'],
+#          confidence=result['confidence'],
+#          tumor_type=result.get('tumor_type'),
+#          tumor_location=result.get('tumor_location'),
+#          tumor_size=result.get('tumor_size'),
+#          result_image_path=result.get('result_image_path')
 #     )
     
 #     db.session.add(new_detection) 
@@ -63,8 +62,6 @@ def get_detection_by_id(detection_id):
 #     # Return the result
 #     detection_dict = new_detection.to_dict()
 #     return detection_dict
-
-
 
 def create_report(detection_id, report_data):
     """Create a medical report for a detection"""

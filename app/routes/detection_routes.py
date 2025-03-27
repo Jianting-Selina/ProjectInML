@@ -1,12 +1,59 @@
 from flask import Blueprint, request, jsonify, current_app
+from tensorflow.keras.models import load_model
+from tensorflow.keras.preprocessing import image
+import numpy as np
+import os
+from io import BytesIO
 
 from app.services.detection_service import (
-    get_patient_detections, get_detection_by_id, create_detection,
+    get_patient_detections, get_detection_by_id,
     create_report, get_report_by_detection
 )
 import os
 
+MODEL_PATH = os.path.join(os.path.dirname(__file__), '../../training/samplecnn.h5')
+model = load_model(MODEL_PATH)
+
+CLASS_NAMES = ["Glioma", "Meningioma", "No Tumor", "Pituitary"]
+
+# Function to preprocess the image before making the prediction
+def preprocess_image(img):
+    """Preprocess the image so that the model can interpret it."""
+    img = img.resize((128, 128)) 
+    img = image.img_to_array(img)  
+    img = np.expand_dims(img, axis=0)
+    img = img / 255.0  
+    return img
+
+
 detection_bp = Blueprint('detection_bp', __name__)
+
+# POST route to predict tumor class on MRI image
+#http://0.0.0.0:5001/api/detections/predict
+@detection_bp.route('/predict', methods=['POST'])
+def predict_mri():
+    """Recibe una imagen de MRI y devuelve la predicción del modelo."""
+    if 'image' not in request.files:
+        return jsonify({"error": "No image file provided"}), 400
+    
+    file = request.files['image']
+    if file.filename == '':
+        return jsonify({"error": "No file selected"}), 400
+    
+    try:
+        img = image.load_img(BytesIO(file.read()), color_mode="rgb")
+        img_array = preprocess_image(img) 
+        
+        # Do the prediction
+        prediction = model.predict(img_array)
+        predicted_class = CLASS_NAMES[np.argmax(prediction)] 
+
+        return jsonify({"prediction": predicted_class}), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+
 
 @detection_bp.route('/patient/<patient_id>', methods=['GET'])
 def get_detections(patient_id):

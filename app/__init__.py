@@ -27,9 +27,9 @@ def create_app(config_class=Config):
     #app.register_blueprint(patient_bp, url_prefix='/api/patients')
     #app.register_blueprint(detection_bp, url_prefix='/api/detections')
 
-    from app.routes import patient_bp
+    from app.routes import patient_bp, detection_bp
     app.register_blueprint(patient_bp, url_prefix='/api/patients')
-
+    app.register_blueprint(detection_bp, url_prefix='/api/detections')
 
     
     # Create database tables
