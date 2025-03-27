@@ -66,6 +66,12 @@
         }
         .consent-checkbox {
             margin-top: 20px;
+            display: flex;
+            align-items: center;
+        }
+        .consent-checkbox input {
+            margin-right: 10px;
+            width: auto;
         }
     </style>
 </head>
@@ -81,11 +87,6 @@
         <h1>Patient Registration</h1>
         
         <form id="patientForm">
-            <div class="form-group">
-                <label for="patientId">Patient ID</label>
-                <input type="text" id="patientId" name="patientId" placeholder="Auto-generated" readonly>
-            </div>
-            
             <div class="form-group">
                 <label for="name">Full Name *</label>
                 <input type="text" id="name" name="name" required>
@@ -115,6 +116,10 @@
                 <input type="text" id="symptoms" name="symptoms">
             </div>
             
+            <div class="consent-checkbox">
+                <input type="checkbox" id="aiConsent" name="aiConsent" required>
+                <label for="aiConsent">I consent to the use of AI for tumor detection analysis *</label>
+            </div>
             
             <button type="submit">Submit Registration</button>
         </form>
@@ -122,56 +127,58 @@
 
     <script>
     document.getElementById('patientForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    // Get form data
-    const name = document.getElementById('name').value;
-    const age = document.getElementById('age').value;
-    const gender = document.getElementById('gender').value;
-    const phone = document.getElementById('phone').value;
-    const symptoms = document.getElementById('symptoms').value;
-    
-    // Create patient object
-    const patient = {
-        name: name,
-        age: age,
-        gender: gender,
-        phone: phone,
-        symptoms: symptoms,
-        registrationDate: new Date().toISOString().split('T')[0]
-    };
-    
-    // Send data to backend API
-    fetch('http://0.0.0.0:5001/api/patients', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(patient)
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(data => {
-        // Assuming the API returns the patient object with an ID
-        alert('Patient registered successfully! Patient ID: ' + data.id);
+        e.preventDefault();
         
-        // Reset form
-        document.getElementById('patientForm').reset();
-        
-        // Optionally display the patient ID somewhere on the page
-        if (document.getElementById('patientId')) {
-            document.getElementById('patientId').value = data.id;
+        // Validate AI consent checkbox
+        const aiConsent = document.getElementById('aiConsent').checked;
+        if (!aiConsent) {
+            alert('Please provide consent for AI tumor detection.');
+            return;
         }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Error registering patient. Please try again.');
+        
+        // Get form data
+        const name = document.getElementById('name').value;
+        const age = document.getElementById('age').value;
+        const gender = document.getElementById('gender').value;
+        const phone = document.getElementById('phone').value;
+        const symptoms = document.getElementById('symptoms').value;
+        
+        // Create patient object
+        const patient = {
+            name: name,
+            age: age,
+            gender: gender,
+            phone: phone,
+            symptoms: symptoms,
+            aiConsent: aiConsent,
+            registrationDate: new Date().toISOString().split('T')[0]
+        };
+        
+        // Send data to backend API
+        fetch('http://0.0.0.0:5001/api/patients', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(patient)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            alert('Patient registered successfully!');
+            
+            // Reset form
+            document.getElementById('patientForm').reset();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error registering patient. Please try again.');
+        });
     });
-});
     </script>
 </body>
 </html>
