@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+    
+    body {
+      background-color: #f0f0f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    
+    .poster {
+      width: 1056px;
+      height: 1632px;
+      background-image: url('./blue.jpeg'); 
+      background-size: cover; /* Ensures the background image covers the entire element */
+      background-position: center; /* Centers the image within the element */
+      background-repeat: no-repeat; /* Prevents the image from repeating */
+       
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    
+    .header {
+      background: linear-gradient(to right, #1a2a6c, #b21f1f, #fdbb2d);
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+    
+    .title {
+      font-size: 48px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    
+    .subtitle {
+      font-size: 24px;
+      font-style: italic;
+    }
+    
+    .authors {
+      font-size: 20px;
+      margin-top: 20px;
+    }
+    
+    .content {
+      display: block;
+      flex: 1;
+      padding: 30px;
+    }
+    
+    .left-column {
+      flex: 2;
+      padding: 30px;
+      /* background-color: #f9f9f9; */
+    }
+    
+    .right-column {
+      flex: 3;
+      padding: 30px;
+    }
+    
+    .section {
+      margin-bottom: 30px;
+    }
+    
+    .section-title {
+      font-size: 28px;
+      color: #1a2a6c;
+      margin-bottom: 15px;
+      border-bottom: 2px solid #1a2a6c;
+      padding-bottom: 5px;
+    }
+    
+    .section-content {
+      font-size: 18px;
+      line-height: 1.5;
+    }
+    
+    .image-placeholder {
+      height: 353px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    
+    .results-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    
+    .metric {
+      background-color: #f0f0f0;
+      padding: 15px;
+      border-radius: 5px;
+      text-align: center;
+    }
+    
+    .metric-value {
+      font-size: 32px;
+      font-weight: bold;
+      color: #b21f1f;
+    }
+    
+    .metric-label {
+      font-size: 16px;
+      color: #333;
+    }
+    
+    .footer {
+      background-color: #1a2a6c;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    
+    .references {
+      font-size: 14px;
+      padding: 20px;
+      background-color: #f9f9f9;
+    }
+    
+    .reference-item {
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="poster">
+    <div class="header">
+      <div class="title">Advanced Brain Tumor Detection</div>
+      <div class="subtitle">Using Deep Learning for Accurate and Efficient Diagnosis</div>
+      <div class="authors">NeuroVision AI: <br>Jianting Liu, Marieth Perez, Akindele David Awe, Ayush Patel, Emmanuel Itsuokor</div>
+    </div>
+    
+    <div class="content">
+      <div class="section">
+        <div class="section-title">Problem Statement</div>
+        <div class="section-content">
+          Delayed or incorrect diagnoses of brain tumours significantly affect survival rates and patient outcomes.The lack of timely, accurate, and accessible diagnostic tools presents a global challenge.
+        </div>
+      </div>
+        <div class="section">
+          <div class="section-title">System Architecture</div>
+          <div class="image-placeholder">
+            <img style="width: 68%;" src="./architecture.png">
+          </div>
+          <div class="section-content">
+            Our model incorporates residual connections and spatial attention mechanisms to focus on relevant regions while maintaining context. The decoder path incorporates multi-scale feature integration for improved boundary detection.
+          </div>
+        </div>
+        
+        <div class="section">
+          <div class="section-title">Results</div>
+          <div class="results-grid">
+            <div class="metric">
+              <div class="metric-value">93%</div>
+              <div class="metric-label">Accuracy</div>
+            </div>
+            <div class="metric">
+              <div class="metric-value">94%</div>
+              <div class="metric-label">Precision</div>
+            </div>
+            <div class="metric">
+              <div class="metric-value">93%</div>
+              <div class="metric-label">recall</div>
+            </div>
+            <div class="metric">
+              <div class="metric-value">93%</div>
+              <div class="metric-label">f1-score</div>
+            </div>
+          </div>
+          <br>
+          <div class="image-placeholder" style="height: 500px;">
+            <img src="results.png">
+          </div>
+        </div>
+        
+        
+      
+    </div>
+  </div>
+</body>
+</html>
