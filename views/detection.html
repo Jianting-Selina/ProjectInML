@@ -268,6 +268,7 @@ window.onload = function() {
         // Start AI detection
         function startDetection() {
             // Check if image is uploaded
+            console.log("dentro de start")
             const imageUpload = document.getElementById('imageUpload');
             const imagePreview = document.getElementById('imagePreview');
             
@@ -286,11 +287,11 @@ window.onload = function() {
             // Prepare image for upload
             const file = imageUpload.files[0];
             const formData = new FormData();
-            formData.append('file', file);
-            formData.append('patient_id', patientId);
+            formData.append('image', file);
+            //formData.append('patient_id', patientId);
 
             // Send to AI detection API
-            fetch('http://127.0.0.1:5001/api/detection/predict', {
+            fetch('http://0.0.0.0:5001/api/detections/predict', {
                 method: 'POST',
                 body: formData
             })
@@ -303,21 +304,24 @@ window.onload = function() {
             .then(result => {
                 // Hide loader
                 loader.style.display = 'none';
+                console.log(result)
+                console.log('Predicción:', result.prediction);
                 
                 // Show result section
                 const resultSection = document.getElementById('resultSection');
                 resultSection.style.display = 'block';
                 
                 // Interpret results
-                const tumorTypes = ['Glioma', 'Meningioma', 'Pituitary', 'No Tumor'];
-                const diagnosisResult = result.class_name;
-                const confidence = (result.confidence * 100).toFixed(2);
+                //const tumorTypes = ['Glioma', 'Meningioma', 'Pituitary', 'No Tumor'];
+                
+                const diagnosisResult = result.prediction;
+                //const confidence = (result.confidence * 100).toFixed(2);
 
                 // Update result display
                 document.getElementById('diagnosisResult').textContent = 
                     diagnosisResult !== 'No Tumor' ? 'Tumor Detected' : 'No Tumor Detected';
                 document.getElementById('tumorType').textContent = diagnosisResult;
-                document.getElementById('confidenceLevel').textContent = `${confidence}%`;
+                //document.getElementById('confidenceLevel').textContent = `${confidence}%`;
 
                 // Styling based on result
                 resultSection.className = diagnosisResult !== 'No Tumor' ? 
@@ -331,12 +335,12 @@ window.onload = function() {
                 document.getElementById('reportBtn').disabled = false;
 
                 // Optional: Save detection result
-                saveDetectionResult(patientId, {
-                    date: new Date().toISOString(),
-                    tumorType: diagnosisResult,
-                    confidence: `${confidence}%`,
-                    imageSrc: imagePreview.src
-                });
+                //saveDetectionResult(patientId, {
+                    //date: new Date().toISOString(),
+                    //tumorType: diagnosisResult,
+                    //confidence: `${confidence}%`,
+                    //imageSrc: imagePreview.src
+                //});
             })
             .catch(error => {
                 console.error('Detection error:', error);
