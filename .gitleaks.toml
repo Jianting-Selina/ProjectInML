@@ -1,7 +1,19 @@
 [[rules]]
+id = "database-engine"
+description = "Database Engine"
+regex = '''DB_ENGINE[=]["'\s]*[a-zA-Z0-9]+'''
+tags = ["dbengine"]
+
+[[rules]]
+id = "database-name"
+description = "Database Name"
+regex = '''DB_NAME[=]["'\s]*[a-zA-Z0-9-_\.]+'''
+tags = ["dbname"]
+
+[[rules]]
 id = "database-user"
 description = "Database User"
-regex = '''DB_USER[=]["'\s]*[a-zA-Z0-9-_.]+'''
+regex = '''DB_USERNAME[=]["'\s]*[a-zA-Z0-9-_.]+'''
 tags = ["dbuser"]
 
 [[rules]]
@@ -13,7 +25,7 @@ tags = ["dbpassword"]
 [[rules]]
 id = "database-host"
 description = "Database Host"
-regex = '''DB_HOST[=]["'\s]*[a-zA-Z0-9-.]+'''
+regex = '''DB_HOST[=]["'\s]*[a-zA-Z0-9-_.]+'''
 tags = ["dbhost"]
 
 [[rules]]
