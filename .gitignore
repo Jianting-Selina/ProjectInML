@@ -13,7 +13,7 @@ myenv-braindetection/
 myprojectbraindetection/
 venv/
 env/
-.env
+
 
 # Ignore generated Python files
 __pycache__/

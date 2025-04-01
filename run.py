@@ -19,14 +19,16 @@ app = create_app()
 def open_browser():
     # Give the server some time to start
     time.sleep(3)
-    url = "http://0.0.0.0:5001/api/patients/form"  # Your form URL
+    url = f"http://0.0.0.0:{DOCKER_PORT}/api/patients/form"  # Your form URL
     webbrowser.open(url, new=2)  # new=2 opens it in a new tab
 
-
-
-
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=DOCKER_PORT, debug=True)
+    # Only open browser in the main process, not in the reloader
+    if os.environ.get('WERKZEUG_RUN_MAIN') != 'true':
+        threading.Thread(target=open_browser).start()
+    
+    # Run the Flask app
+    app.run(host="0.0.0.0", port=int(DOCKER_PORT) if DOCKER_PORT else 5001, debug=True)
 
     print("Registered routes:")
     for rule in app.url_map.iter_rules():
