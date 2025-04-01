@@ -9,8 +9,8 @@ import threading
 load_dotenv()
 
 # Read and print environment variable
-db_password = os.getenv('DB_PASSWORD')
-print(f"DB_PASSWORD: {db_password}")  # Ensure it's printed
+DOCKER_PORT = os.getenv('DOCKER_PORT')
+print(f"DOCKER_PORT: {DOCKER_PORT}")  # Ensure it's printed
 
 # Initialize Flask app
 app = create_app()
@@ -22,11 +22,11 @@ def open_browser():
     url = "http://0.0.0.0:5001/api/patients/form"  # Your form URL
     webbrowser.open(url, new=2)  # new=2 opens it in a new tab
 
-# Start the browser-opening function in a separate thread to avoid blocking the server
-threading.Thread(target=open_browser).start()
+
+
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5001, debug=True)
+    app.run(host="0.0.0.0", port=DOCKER_PORT, debug=True)
 
     print("Registered routes:")
     for rule in app.url_map.iter_rules():
