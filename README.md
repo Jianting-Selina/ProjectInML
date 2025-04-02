@@ -140,3 +140,13 @@ To train the model, run:
 python train.py --model <model name> --data_dir data --epochs <number of epochs>
 
 
+### For vulnerabilities
+
+    ```bash
+    brew install gitleaks
+    ```
+
+    ```bash
+    gitleaks detect --config .gitleaks.toml --source . --verbose
+    ```
+
