@@ -1,0 +1,47 @@
+version: "3.8"
+
+services:
+  app:
+    build: .
+    ports:
+      - "${DOCKER_PORT}:${DOCKER_PORT}"
+    env_file:
+      - .env
+    environment:
+      - DB_ENGINE=${DB_ENGINE}
+      - DB_NAME=${DB_NAME}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - EPOCHS=${EPOCHS}
+      - BATCH_SIZE=${BATCH_SIZE}
+      - IMAGE_SIZE=${IMAGE_SIZE}
+    volumes:
+      - ./data:/app/data 
+
+# Future PostgreSQL o MySQL
+# 
+#  db:
+#    image: postgres:13
+#    environment:
+#      POSTGRES_USER: ${DB_USERNAME}
+#      POSTGRES_PASSWORD: ${DB_PASSWORD}
+#      POSTGRES_DB: ${DB_NAME}
+#    ports:
+#      - "5432:5432"
+#    volumes:
+#      - db-data:/var/lib/postgresql/data
+# 
+#  db:
+#    image: mysql:8
+#    environment:
+#      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+#      MYSQL_DATABASE: ${DB_NAME}
+#    ports:
+#      - "3306:3306"
+#    volumes:
+#      - db-data:/var/lib/mysql
+
+volumes:
+  db-data:
