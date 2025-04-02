@@ -202,6 +202,7 @@
             }
         ];
 
+
         // Get patient ID from URL
         const urlParams = new URLSearchParams(window.location.search);
         const patientId = urlParams.get('id');
@@ -228,42 +229,42 @@
         };
 
         // Fetch patient data from URL parameters
-function fetchPatientData() {
-    // Get patient details from URL parameters
-    const urlParams = new URLSearchParams(window.location.search);
-    const patientName = urlParams.get('name') || 'Unknown';
-    const patientAge = urlParams.get('age') || '-';
-    const patientGender = urlParams.get('gender') || '-';
-    const patientSymptoms = urlParams.get('symptoms') || 'No symptoms reported';
+        function fetchPatientData() {
+            // Get patient details from URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const patientName = urlParams.get('name') || 'John Doe';
+            const patientAge = urlParams.get('age') || '45';
+            const patientGender = urlParams.get('gender') || 'Male';
+            const patientSymptoms = urlParams.get('symptoms') || 'No symptoms reported';
 
-    // Update patient information on the page
-    document.getElementById('patientName').textContent = patientName;
-    document.getElementById('patientAge').textContent = patientAge;
-    document.getElementById('patientGender').textContent = 
-        patientGender === 'male' ? 'Male' : 'Female';
-    document.getElementById('patientSymptoms').textContent = patientSymptoms;
-}
-
-// Modify window.onload to call the new fetchPatientData
-window.onload = function() {
-    // Set up image upload preview
-    document.getElementById('imageUpload').addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                document.getElementById('imagePreview').src = event.target.result;
-            };
-            reader.readAsDataURL(file);
+            // Update patient information on the page
+            document.getElementById('patientName').textContent = patientName;
+            document.getElementById('patientAge').textContent = patientAge;
+            document.getElementById('patientGender').textContent = 
+                patientGender === 'male' ? 'Male' : 'Female';
+            document.getElementById('patientSymptoms').textContent = patientSymptoms;
         }
-    });
+
+        // Modify window.onload to call the new fetchPatientData
+        window.onload = function() {
+            // Set up image upload preview
+            document.getElementById('imageUpload').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        document.getElementById('imagePreview').src = event.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
     
-    // Set up detection button
-    document.getElementById('detectBtn').addEventListener('click', startDetection);
-    
-    // Fetch patient data from URL
-    fetchPatientData();
-};
+            // Set up detection button
+            document.getElementById('detectBtn').addEventListener('click', startDetection);
+        
+            // Fetch patient data from URL
+            fetchPatientData();
+        };
 
         // Start AI detection
         function startDetection() {

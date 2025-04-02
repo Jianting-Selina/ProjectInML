@@ -173,6 +173,8 @@
             
             // Reset form
             document.getElementById('patientForm').reset();
+            // Redirect to the patient list
+            window.location.href = 'http://0.0.0.0:5001/api/patients/list';
         })
         .catch(error => {
             console.error('Error:', error);
