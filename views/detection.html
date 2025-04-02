@@ -122,10 +122,10 @@
 <body>
     <div class="container">
         <div class="nav">
-            <a href="list">Home</a>
-            <a href="form">Register Patient</a>
-            <a href="list">Patient List</a>
-            <a href="detection">AI Detection</a>
+            <a href="/api/patients/list">Home</a>
+            <a href="/api/patients/form">Register Patient</a>
+            <a href="/api/patients/list">Patient List</a>
+            <a href="/api/patients/list">AI Detection</a>
         </div>
         
         <h1>Brain Tumor AI Detection</h1>
@@ -191,16 +191,37 @@
     </div>
 
     <script>
-        // Demo patient data for fallback
-        const DEMO_PATIENTS = [
-            {
-                id: 'PT001',
-                name: 'John Doe',
-                age: 45,
-                gender: 'male',
-                symptoms: 'Persistent headaches'
+
+        async function fetchPatientDataNew() {
+            try {
+                
+                const currentUrl = window.location.pathname;
+                const patientId = currentUrl.split("/")[3];
+                const fetchUrl = `/api/patients/${patientId}`;
+
+                const response = await fetch(fetchUrl);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const data = await response.json();
+
+                // Aseguramos que los datos existen antes de actualizar el HTML
+                document.getElementById("patientName").textContent = data.name || "N/A";
+                document.getElementById("patientAge").textContent = data.age || "N/A";
+                document.getElementById("patientGender").textContent = data.gender || "N/A";
+                document.getElementById("patientSymptoms").textContent = data.symptoms || "N/A";
+
+            } catch (error) {
+                console.error("Error fetching patient data:", error);
+                document.getElementById("patientName").textContent = "Error loading data";
+                document.getElementById("patientAge").textContent = "-";
+                document.getElementById("patientGender").textContent = "-";
+                document.getElementById("patientSymptoms").textContent = "-";
             }
-        ];
+        }
+
+        // Llamamos a la función para obtener los datos al cargar la página
+        fetchPatientDataNew();
 
 
         // Get patient ID from URL
@@ -224,8 +245,6 @@
             // Set up detection button
             document.getElementById('detectBtn').addEventListener('click', startDetection);
             
-            // Fetch patient data
-            fetchPatientData(patientId);
         };
 
         // Fetch patient data from URL parameters
@@ -262,8 +281,6 @@
             // Set up detection button
             document.getElementById('detectBtn').addEventListener('click', startDetection);
         
-            // Fetch patient data from URL
-            fetchPatientData();
         };
 
         // Start AI detection
@@ -292,7 +309,7 @@
             //formData.append('patient_id', patientId);
 
             // Send to AI detection API
-            fetch('http://0.0.0.0:5001/api/detections/predict', {
+            fetch('/api/detections/predict', {
                 method: 'POST',
                 body: formData
             })

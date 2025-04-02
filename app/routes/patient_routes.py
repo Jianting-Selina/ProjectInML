@@ -71,9 +71,9 @@ def patient_form():
 def get_patients_list():
     return render_template('list.html')
 
-@patient_bp.route('/detection', methods=['GET'])
-def patient_detection():
-    return render_template('detection.html')
+@patient_bp.route('/<patient_id>/detection', methods=['GET'])
+def patient_detection(patient_id):
+    return render_template('detection.html', patient_id=patient_id)
 
 # front-end route end
 

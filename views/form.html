@@ -78,10 +78,10 @@
 <body>
     <div class="container">
         <div class="nav">
-            <a href="list">Home</a>
-            <a href="form">Register Patient</a>
-            <a href="list">Patient List</a>
-            <a href="detection">AI Detection</a>
+            <a href="/api/patients/list">Home</a>
+            <a href="/api/patients/form">Register Patient</a>
+            <a href="/api/patients/list">Patient List</a>
+            <a href="/api/patients/list">AI Detection</a>
         </div>
         
         <h1>Patient Registration</h1>
@@ -155,7 +155,7 @@
         };
         
         // Send data to backend API
-        fetch('http://0.0.0.0:5001/api/patients', {
+        fetch('/api/patients', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -174,7 +174,7 @@
             // Reset form
             document.getElementById('patientForm').reset();
             // Redirect to the patient list
-            window.location.href = 'http://0.0.0.0:5001/api/patients/list';
+            window.location.href = '/api/patients/list';
         })
         .catch(error => {
             console.error('Error:', error);

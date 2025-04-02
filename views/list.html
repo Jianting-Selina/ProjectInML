@@ -94,10 +94,10 @@
 <body>
     <div class="container">
         <div class="nav">
-            <a href="list">Home</a>
-            <a href="form">Register Patient</a>
-            <a href="list">Patient List</a>
-            <a href="detection">AI Detection</a>
+            <a href="/api/patients/list">Home</a>
+            <a href="/api/patients/form">Register Patient</a>
+            <a href="/api/patients/list">Patient List</a>
+            <a href="/api/patients/list">AI Detection</a>
         </div>
 
         <h1>Patient List</h1>
@@ -125,39 +125,6 @@
     </div>
 
     <script>
-        // Demo patient data (simulating data that would come from an API)
-        const DEMO_PATIENTS = [
-            {
-                id: 'PT001',
-                name: 'John Doe',
-                age: 45,
-                gender: 'male',
-                phone: '555-1234',
-                symptoms: 'Persistent headaches',
-                registrationDate: '2024-03-15',
-                aiConsent: true
-            },
-            {
-                id: 'PT002',
-                name: 'Jane Smith',
-                age: 35,
-                gender: 'female',
-                phone: '555-5678',
-                symptoms: 'Vision changes',
-                registrationDate: '2024-03-20',
-                aiConsent: true
-            },
-            {
-                id: 'PT003',
-                name: 'Michael Johnson',
-                age: 55,
-                gender: 'male',
-                phone: '555-9012',
-                symptoms: 'Memory loss',
-                registrationDate: '2024-03-25',
-                aiConsent: true
-            }
-        ];
 
         // Load patients when page loads
         window.onload = function () {
@@ -169,7 +136,7 @@
             const tableBody = document.getElementById('patientsList');
             tableBody.innerHTML = '';
 
-            fetch('http://0.0.0.0:5001/api/patients/', {
+            fetch('/api/patients/', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -199,7 +166,7 @@
                 <td>${patient.registration_date}</td>
                 <td>
                     <button class="action-btn" onclick="viewPatient('${patient.patient_id}')">View</button>
-                    <button class="action-btn" onclick="startDetection('${patient.patient_id}','${patient.name}','${patient.age}','${patient.gender}','${patient.phone}','${patient.symptoms}')">Detect</button>
+                    <button class="action-btn" onclick="startDetection('${patient.patient_id}')">Detect</button>
                 </td>
             `;
                         tableBody.appendChild(row);
@@ -254,17 +221,10 @@
         }
 
         // Go to AI detection page
-        // Go to AI detection page
-        function startDetection(patientId, name, age, gender, phone, symptoms) {
+        function startDetection(patientId) {
             try {
                 // Construct the URL with multiple patient details
-                const detectionUrl = `/api/patients/detection?` +
-                    `patientId=${encodeURIComponent(patientId)}` +
-                    `&name=${encodeURIComponent(name)}` +
-                    `&age=${encodeURIComponent(age)}` +
-                    `&gender=${encodeURIComponent(gender)}` +
-                    `&phone=${encodeURIComponent(phone)}` +
-                    `&symptoms=${encodeURIComponent(symptoms)}`;
+                const detectionUrl = `/api/patients/${encodeURIComponent(patientId)}/detection`;
 
                 // Navigate to the detection page
                 window.location.href = detectionUrl;
