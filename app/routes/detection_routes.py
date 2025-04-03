@@ -11,7 +11,8 @@ from app.services.detection_service import (
 )
 import os
 
-MODEL_PATH = os.path.join(os.path.dirname(__file__), '../../training/samplecnn.h5')
+#MODEL_PATH = os.path.join(os.path.dirname(__file__), '../../training/samplecnn.h5')
+MODEL_PATH = os.path.join(os.path.dirname(__file__), '../../training/vgg16_final_model.h5')
 model = load_model(MODEL_PATH)
 
 CLASS_NAMES = ["Glioma", "Meningioma", "No Tumor", "Pituitary"]
@@ -19,11 +20,13 @@ CLASS_NAMES = ["Glioma", "Meningioma", "No Tumor", "Pituitary"]
 # Function to preprocess the image before making the prediction
 def preprocess_image(img):
     """Preprocess the image so that the model can interpret it."""
-    img = img.resize((128, 128)) 
+    img = img.resize((160, 160)) 
     img = image.img_to_array(img)  
     img = np.expand_dims(img, axis=0)
     img = img / 255.0  
     return img
+
+
 
 
 detection_bp = Blueprint('detection_bp', __name__)
@@ -43,9 +46,12 @@ def predict_mri():
     try:
         img = image.load_img(BytesIO(file.read()), color_mode="rgb")
         img_array = preprocess_image(img) 
+        #img_array = process_image_for_vgg(img) 
         
         # Do the prediction
         prediction = model.predict(img_array)
+        print("prediction")
+        print(prediction)
         predicted_class = CLASS_NAMES[np.argmax(prediction)] 
 
         return jsonify({"prediction": predicted_class}), 200
