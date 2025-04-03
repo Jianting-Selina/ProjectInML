@@ -334,12 +334,13 @@
                 
                 const diagnosisResult = result.prediction;
                 //const confidence = (result.confidence * 100).toFixed(2);
+                const confidence = result.confidence
 
                 // Update result display
                 document.getElementById('diagnosisResult').textContent = 
                     diagnosisResult !== 'No Tumor' ? 'Tumor Detected' : 'No Tumor Detected';
                 document.getElementById('tumorType').textContent = diagnosisResult;
-                //document.getElementById('confidenceLevel').textContent = `${confidence}%`;
+                document.getElementById('confidenceLevel').textContent = confidence;
 
                 // Styling based on result
                 resultSection.className = diagnosisResult !== 'No Tumor' ? 
