@@ -18,15 +18,24 @@ model = load_model(MODEL_PATH)
 CLASS_NAMES = ["Glioma", "Meningioma", "No Tumor", "Pituitary"]
 
 # Function to preprocess the image before making the prediction
+#def preprocess_image(img):
+    #"""Preprocess the image so that the model can interpret it."""
+    #img = img.resize((128, 128)) 
+    #img = img.resize((160, 160)) 
+    #img = image.img_to_array(img)  
+    #img = np.expand_dims(img, axis=0)
+    #img = img / 255.0  
+    #return img
+
+
+from tensorflow.keras.applications.vgg16 import preprocess_input
+
 def preprocess_image(img):
-    """Preprocess the image so that the model can interpret it."""
-    img = img.resize((160, 160)) 
-    img = image.img_to_array(img)  
+    img = img.resize((160, 160))  # Cambiar a 224x224
+    img = image.img_to_array(img)
     img = np.expand_dims(img, axis=0)
-    img = img / 255.0  
+    img = preprocess_input(img)
     return img
-
-
 
 
 detection_bp = Blueprint('detection_bp', __name__)
@@ -49,12 +58,19 @@ def predict_mri():
         #img_array = process_image_for_vgg(img) 
         
         # Do the prediction
+        print("img_array")
+        print(img_array)
         prediction = model.predict(img_array)
         print("prediction")
         print(prediction)
-        predicted_class = CLASS_NAMES[np.argmax(prediction)] 
 
-        return jsonify({"prediction": predicted_class}), 200
+        confidence = np.max(prediction) * 100  # Convertir a porcentaje
+        predicted_class = CLASS_NAMES[np.argmax(prediction)]
+        #return jsonify({"prediction": predicted_class}), 200
+        return jsonify({"prediction": predicted_class, "confidence": f"{confidence:.2f}%"}), 200
+
+
+        
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
