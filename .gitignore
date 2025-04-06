@@ -24,3 +24,5 @@ __pycache__/
 # Ignore log files (if any)
 *.log
 
+
+training/vgg16_final_model.h5
