@@ -138,41 +138,41 @@ model.compile(
 )
 
 # === Step 4: MLflow Tracking ===
-mlflow.set_experiment("Brain Tumor Classification")
+#mlflow.set_experiment("Brain Tumor Classification")
 
-with mlflow.start_run():
-    mlflow.log_param("batch_size", BATCH_SIZE)
-    mlflow.log_param("epochs", EPOCHS)
-    mlflow.log_param("image_size", IMAGE_SIZE)
+#with mlflow.start_run(nested=True):
+mlflow.log_param("batch_size", BATCH_SIZE)
+mlflow.log_param("epochs", EPOCHS)
+mlflow.log_param("image_size", IMAGE_SIZE)
 
     # ModelCheckpoint
-    checkpoint_cb = keras.callbacks.ModelCheckpoint(
-        filepath="./training/samplecnn_mlflow.h5",
-        save_best_only=True,
-        monitor="val_loss",
-        save_weights_only=False
-    )
+checkpoint_cb = keras.callbacks.ModelCheckpoint(
+    filepath="./training/samplecnn_mlflow.h5",
+    save_best_only=True,
+    monitor="val_loss",
+    save_weights_only=False
+)
 
-    print("🚀 Starting training...")
-    history = model.fit(
-        train_ds,
-        epochs=EPOCHS,
-        validation_data=val_ds,
-        callbacks=[checkpoint_cb]
-    )
+print("🚀 Starting training...")
+history = model.fit(
+    train_ds,
+    epochs=EPOCHS,
+    validation_data=val_ds,
+    callbacks=[checkpoint_cb]
+)
 
-    print("✅ Training complete!")
+print("✅ Training complete!")
 
-    # Evaluate on test set
-    loss, acc = model.evaluate(test_ds)
-    print(f"Test Accuracy: {acc:.4f}")
+# Evaluate on test set
+loss, acc = model.evaluate(test_ds)
+print(f"Test Accuracy: {acc:.4f}")
 
-    # Log metrics
-    mlflow.log_metric("test_accuracy", acc)
-    mlflow.log_metric("test_loss", loss)
+# Log metrics
+mlflow.log_metric("test_accuracy", acc)
+mlflow.log_metric("test_loss", loss)
 
-    # Log full model
-    mlflow.tensorflow.log_model(model, "model")
+# Log full model
+mlflow.tensorflow.log_model(model, "model")
 
-    print("📦 Model & metrics logged to MLflow.")
+print("📦 Model & metrics logged to MLflow.")
 
