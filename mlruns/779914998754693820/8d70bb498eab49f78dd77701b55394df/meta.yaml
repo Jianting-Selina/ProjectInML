@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/marieth/Documents/Conestoga%20AI/Project_ML/ProjectInML/mlruns/779914998754693820/8d70bb498eab49f78dd77701b55394df/artifacts
+end_time: 1743970955218
+entry_point_name: ''
+experiment_id: '779914998754693820'
+lifecycle_stage: active
+run_id: 8d70bb498eab49f78dd77701b55394df
+run_name: illustrious-goat-569
+run_uuid: 8d70bb498eab49f78dd77701b55394df
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1743968390616
+status: 3
+tags: []
+user_id: marieth
