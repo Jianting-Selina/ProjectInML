@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/marieth/Documents/Conestoga%20AI/Project_ML/ProjectInML/mlruns/0/d8e1ed1339a6469087303d61e5bddd44/artifacts
+end_time: 1744213570863
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: d8e1ed1339a6469087303d61e5bddd44
+run_name: big-elk-534
+run_uuid: d8e1ed1339a6469087303d61e5bddd44
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1744213549451
+status: 4
+tags: []
+user_id: marieth

@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/marieth/Documents/Conestoga%20AI/Project_ML/ProjectInML/mlruns/0/4b1e06736b3a4b36bb763b579b9f831a/artifacts
+end_time: 1744214085941
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 4b1e06736b3a4b36bb763b579b9f831a
+run_name: bemused-ray-739
+run_uuid: 4b1e06736b3a4b36bb763b579b9f831a
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1744214073174
+status: 4
+tags: []
+user_id: marieth

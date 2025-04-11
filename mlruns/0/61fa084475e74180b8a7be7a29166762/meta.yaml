@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/marieth/Documents/Conestoga%20AI/Project_ML/ProjectInML/mlruns/0/61fa084475e74180b8a7be7a29166762/artifacts
+end_time: 1744204585297
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 61fa084475e74180b8a7be7a29166762
+run_name: peaceful-sponge-921
+run_uuid: 61fa084475e74180b8a7be7a29166762
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1744202627666
+status: 4
+tags: []
+user_id: marieth

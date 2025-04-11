@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1744216918145
+current_stage: None
+description: ''
+last_updated_timestamp: 1744216918145
+name: Brain tumor draft
+run_id: 8d70bb498eab49f78dd77701b55394df
+run_link: ''
+source: file:///Users/marieth/Documents/Conestoga%20AI/Project_ML/ProjectInML/mlruns/779914998754693820/8d70bb498eab49f78dd77701b55394df/artifacts/model
+status: READY
+status_message: null
+storage_location: file:///Users/marieth/Documents/Conestoga%20AI/Project_ML/ProjectInML/mlruns/779914998754693820/8d70bb498eab49f78dd77701b55394df/artifacts/model
+user_id: null
+version: 1

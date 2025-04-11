@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/marieth/Documents/Conestoga%20AI/Project_ML/ProjectInML/mlruns/0/f7e64bc4f8b343f29edc644dbc69f53a/artifacts
+end_time: 1744214143557
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: f7e64bc4f8b343f29edc644dbc69f53a
+run_name: indecisive-worm-174
+run_uuid: f7e64bc4f8b343f29edc644dbc69f53a
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1744214124685
+status: 4
+tags: []
+user_id: marieth
