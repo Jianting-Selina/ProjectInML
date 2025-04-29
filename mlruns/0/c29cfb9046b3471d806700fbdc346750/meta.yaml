@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/marieth/Documents/Conestoga%20AI/Project_ML/ProjectInML/mlruns/0/c29cfb9046b3471d806700fbdc346750/artifacts
+end_time: 1744215419223
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: c29cfb9046b3471d806700fbdc346750
+run_name: invincible-lamb-348
+run_uuid: c29cfb9046b3471d806700fbdc346750
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1744215191518
+status: 3
+tags: []
+user_id: marieth

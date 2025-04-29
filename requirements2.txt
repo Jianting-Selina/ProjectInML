@@ -1,0 +1,12 @@
+flask
+flask-restful
+opencv-python
+numpy
+pillow
+tensorflow
+torch
+torchvision
+scikit-learn
+pandas
+requests
+gunicorn

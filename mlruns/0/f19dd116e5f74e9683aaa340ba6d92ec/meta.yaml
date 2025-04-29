@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/marieth/Documents/Conestoga%20AI/Project_ML/ProjectInML/mlruns/0/f19dd116e5f74e9683aaa340ba6d92ec/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: f19dd116e5f74e9683aaa340ba6d92ec
+run_name: luminous-eel-471
+run_uuid: f19dd116e5f74e9683aaa340ba6d92ec
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1744201766417
+status: 1
+tags: []
+user_id: marieth

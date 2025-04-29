@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/marieth/Documents/Conestoga%20AI/Project_ML/ProjectInML/mlruns/0/51c871ae1b054199b0d91fcdf38b5b51/artifacts
+end_time: 1744214651217
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 51c871ae1b054199b0d91fcdf38b5b51
+run_name: fearless-mink-846
+run_uuid: 51c871ae1b054199b0d91fcdf38b5b51
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1744214643796
+status: 4
+tags: []
+user_id: marieth

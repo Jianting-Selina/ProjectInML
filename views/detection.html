@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Detection - Brain Tumor Detection System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            color: #333;
+            text-align: center;
+        }
+        .nav {
+            background: #333;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        .nav a {
+            color: white;
+            margin-right: 15px;
+            text-decoration: none;
+        }
+        .patient-info {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        .upload-section {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .preview-section {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+        .preview-box {
+            width: 45%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            text-align: center;
+        }
+        #imagePreview, #resultPreview {
+            max-width: 100%;
+            height: auto;
+            max-height: 200px;
+            margin-top: 10px;
+        }
+        .buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 15px;
+            margin: 0 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .detect-btn {
+            background: #4CAF50;
+            color: white;
+        }
+        .report-btn {
+            background: #2196F3;
+            color: white;
+        }
+        .loader {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 2s linear infinite;
+            margin: 20px auto;
+            display: none;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .result-section {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            display: none;
+        }
+        .result-positive {
+            background-color: #ffebee;
+            border-left: 5px solid #f44336;
+        }
+        .result-negative {
+            background-color: #e8f5e9;
+            border-left: 5px solid #4caf50;
+        }
+        .info-row {
+            display: flex;
+            margin-bottom: 5px;
+        }
+        .info-label {
+            width: 120px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="/api/patients/list">Home</a>
+            <a href="/api/patients/form">Register Patient</a>
+            <a href="/api/patients/list">Patient List</a>
+            <a href="/api/patients/list">AI Detection</a>
+        </div>
+        
+        <h1>Brain Tumor AI Detection</h1>
+        
+        <div id="patientInfoSection" class="patient-info">
+            <h2>Patient Information</h2>
+            <div class="info-row">
+                <span class="info-label">Patient Name:</span>
+                <span id="patientName">-</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Age:</span>
+                <span id="patientAge">-</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Gender:</span>
+                <span id="patientGender">-</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Symptoms:</span>
+                <span id="patientSymptoms">-</span>
+            </div>
+        </div>
+        
+        <div class="upload-section">
+            <h2>Upload MRI Image</h2>
+            <input type="file" id="imageUpload" accept="image/*">
+        </div>
+        
+        <div class="preview-section">
+            <div class="preview-box">
+                <h3>Original Image</h3>
+                <img id="imagePreview" src="/api/placeholder/400/300" alt="Image preview">
+            </div>
+            <div class="preview-box">
+                <h3>AI Analysis Result</h3>
+                <img id="resultPreview" src="/api/placeholder/400/300" alt="Result preview">
+            </div>
+        </div>
+        
+        <div class="loader" id="loader"></div>
+        
+        <div class="result-section" id="resultSection">
+            <h2>Detection Results</h2>
+            <div class="info-row">
+                <span class="info-label">Diagnosis:</span>
+                <span id="diagnosisResult">-</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Tumor Type:</span>
+                <span id="tumorType">-</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Confidence:</span>
+                <span id="confidenceLevel">-</span>
+            </div>
+        </div>
+        
+        <div class="buttons">
+            <button class="detect-btn" id="detectBtn">Start Detection</button>
+            <button class="report-btn" id="reportBtn" disabled>Generate Report</button>
+        </div>
+    </div>
+
+    <script>
+
+        async function fetchPatientDataNew() {
+            try {
+                
+                const currentUrl = window.location.pathname;
+                const patientId = currentUrl.split("/")[3];
+                const fetchUrl = `/api/patients/${patientId}`;
+
+                const response = await fetch(fetchUrl);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const data = await response.json();
+
+                // Aseguramos que los datos existen antes de actualizar el HTML
+                document.getElementById("patientName").textContent = data.name || "N/A";
+                document.getElementById("patientAge").textContent = data.age || "N/A";
+                document.getElementById("patientGender").textContent = data.gender || "N/A";
+                document.getElementById("patientSymptoms").textContent = data.symptoms || "N/A";
+
+            } catch (error) {
+                console.error("Error fetching patient data:", error);
+                document.getElementById("patientName").textContent = "Error loading data";
+                document.getElementById("patientAge").textContent = "-";
+                document.getElementById("patientGender").textContent = "-";
+                document.getElementById("patientSymptoms").textContent = "-";
+            }
+        }
+
+        // Llamamos a la función para obtener los datos al cargar la página
+        fetchPatientDataNew();
+
+
+        // Get patient ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const patientId = urlParams.get('id');
+
+        // Load patient data when page loads
+        window.onload = function() {
+            // Set up image upload preview
+            document.getElementById('imageUpload').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        document.getElementById('imagePreview').src = event.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            // Set up detection button
+            document.getElementById('detectBtn').addEventListener('click', startDetection);
+            
+        };
+
+        // Fetch patient data from URL parameters
+        function fetchPatientData() {
+            // Get patient details from URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const patientName = urlParams.get('name') || 'John Doe';
+            const patientAge = urlParams.get('age') || '45';
+            const patientGender = urlParams.get('gender') || 'Male';
+            const patientSymptoms = urlParams.get('symptoms') || 'No symptoms reported';
+
+            // Update patient information on the page
+            document.getElementById('patientName').textContent = patientName;
+            document.getElementById('patientAge').textContent = patientAge;
+            document.getElementById('patientGender').textContent = 
+                patientGender === 'male' ? 'Male' : 'Female';
+            document.getElementById('patientSymptoms').textContent = patientSymptoms;
+        }
+
+        // Modify window.onload to call the new fetchPatientData
+        window.onload = function() {
+            // Set up image upload preview
+            document.getElementById('imageUpload').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        document.getElementById('imagePreview').src = event.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+    
+            // Set up detection button
+            document.getElementById('detectBtn').addEventListener('click', startDetection);
+        
+        };
+
+        // Start AI detection
+        function startDetection() {
+            // Check if image is uploaded
+            console.log("dentro de start")
+            const imageUpload = document.getElementById('imageUpload');
+            const imagePreview = document.getElementById('imagePreview');
+            
+            if (imagePreview.src.includes('placeholder')) {
+                alert('Please upload an MRI image first');
+                return;
+            }
+
+            // Show loader
+            const loader = document.getElementById('loader');
+            loader.style.display = 'block';
+            
+            // Disable detection button
+            document.getElementById('detectBtn').disabled = true;
+
+            // Prepare image for upload
+            const file = imageUpload.files[0];
+            const formData = new FormData();
+            formData.append('image', file);
+            //formData.append('patient_id', patientId);
+
+            // Send to AI detection API
+            fetch('/api/detections/predict', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Detection API call failed');
+                }
+                return response.json();
+            })
+            .then(result => {
+                // Hide loader
+                loader.style.display = 'none';
+                console.log(result)
+                console.log('Predicción:', result.prediction);
+                
+                // Show result section
+                const resultSection = document.getElementById('resultSection');
+                resultSection.style.display = 'block';
+                
+                // Interpret results
+                //const tumorTypes = ['Glioma', 'Meningioma', 'Pituitary', 'No Tumor'];
+                
+                const diagnosisResult = result.prediction;
+                //const confidence = (result.confidence * 100).toFixed(2);
+                const confidence = result.confidence
+
+                // Update result display
+                document.getElementById('diagnosisResult').textContent = 
+                    diagnosisResult !== 'No Tumor' ? 'Tumor Detected' : 'No Tumor Detected';
+                document.getElementById('tumorType').textContent = diagnosisResult;
+                document.getElementById('confidenceLevel').textContent = confidence;
+
+                // Styling based on result
+                resultSection.className = diagnosisResult !== 'No Tumor' ? 
+                    'result-section result-positive' : 
+                    'result-section result-negative';
+
+                // Update result preview (placeholder - in real app, this might come from API)
+                document.getElementById('resultPreview').src = imagePreview.src;
+
+                // Enable report button
+                document.getElementById('reportBtn').disabled = false;
+
+                // Optional: Save detection result
+                //saveDetectionResult(patientId, {
+                    //date: new Date().toISOString(),
+                    //tumorType: diagnosisResult,
+                    //confidence: `${confidence}%`,
+                    //imageSrc: imagePreview.src
+                //});
+            })
+            .catch(error => {
+                console.error('Detection error:', error);
+                
+                // Hide loader
+                loader.style.display = 'none';
+                
+                // Re-enable detection button
+                document.getElementById('detectBtn').disabled = false;
+                
+                // Show error message
+                alert('Tumor detection failed. Please try again.');
+            });
+        }
+
+        // Save detection result locally
+        function saveDetectionResult(patientId, result) {
+            // Get existing results or create new
+            let results = JSON.parse(localStorage.getItem('detectionResults')) || {};
+            
+            // Add result to patient
+            results[patientId] = result;
+            
+            // Save to localStorage
+            localStorage.setItem('detectionResults', JSON.stringify(results));
+        }
+    </script>
+</body>
+</html>

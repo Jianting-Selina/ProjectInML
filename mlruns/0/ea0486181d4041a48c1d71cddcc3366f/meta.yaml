@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/marieth/Documents/Conestoga%20AI/Project_ML/ProjectInML/mlruns/0/ea0486181d4041a48c1d71cddcc3366f/artifacts
+end_time: 1744213975558
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: ea0486181d4041a48c1d71cddcc3366f
+run_name: crawling-shrimp-24
+run_uuid: ea0486181d4041a48c1d71cddcc3366f
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1744213647861
+status: 4
+tags: []
+user_id: marieth

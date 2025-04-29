@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/marieth/Documents/Conestoga%20AI/Project_ML/ProjectInML/mlruns/0/f3b7a4ba4f0d4230959fa7ce1ebb1232/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: f3b7a4ba4f0d4230959fa7ce1ebb1232
+run_name: calm-squirrel-302
+run_uuid: f3b7a4ba4f0d4230959fa7ce1ebb1232
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1744201786868
+status: 1
+tags: []
+user_id: marieth

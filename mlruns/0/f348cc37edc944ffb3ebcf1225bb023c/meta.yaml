@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/marieth/Documents/Conestoga%20AI/Project_ML/ProjectInML/mlruns/0/f348cc37edc944ffb3ebcf1225bb023c/artifacts
+end_time: 1744214039780
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: f348cc37edc944ffb3ebcf1225bb023c
+run_name: fun-crab-804
+run_uuid: f348cc37edc944ffb3ebcf1225bb023c
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1744214015711
+status: 4
+tags: []
+user_id: marieth

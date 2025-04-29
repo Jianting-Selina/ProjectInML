@@ -108,7 +108,7 @@ python train.py --model <model name> --data_dir data --epochs <number of epochs>
 
 ### Data Preparation
 
-*   Download the brain tumor dataset (you can specify the dataset here)
+*   Download the brain tumor dataset (https://www.kaggle.com/code/renjiabarai/brain-tumor-prediction-with-model-comparion/input)
 *   Prepare the image data in the following directory structure:
     ```
      data/
@@ -138,5 +138,17 @@ python train.py --model <model name> --data_dir data --epochs <number of epochs>
 To train the model, run:
 ```bash
 python train.py --model <model name> --data_dir data --epochs <number of epochs>
+
+
+### For vulnerabilities
+
+    ```bash
+    brew install gitleaks
+    ```
+
+    ```bash
+    gitleaks detect --config .gitleaks.toml --source . --verbose
+    ```
+
 
 
